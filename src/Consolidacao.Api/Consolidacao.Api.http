@@ -1,0 +1,13 @@
+@host = http://localhost:5082
+@token = cole-o-jwt-aqui
+
+### Health
+GET {{host}}/health
+
+### Saldo consolidado do dia
+GET {{host}}/api/v1/saldos/2026-08-17
+Authorization: Bearer {{token}}
+
+### Saldos no período (paginado)
+GET {{host}}/api/v1/saldos?inicio=2026-08-01&fim=2026-08-17&pagina=1&tamanhoPagina=20
+Authorization: Bearer {{token}}

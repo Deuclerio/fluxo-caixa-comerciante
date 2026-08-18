@@ -1,0 +1,41 @@
+@host = http://localhost:5081
+
+### Health
+GET {{host}}/health
+
+### Obter token
+POST {{host}}/api/v1/auth/token
+Content-Type: application/json
+
+{
+  "usuario": "comerciante",
+  "senha": "Fluxo@2026"
+}
+
+### Registrar crédito
+POST {{host}}/api/v1/lancamentos
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "tipo": 1,
+  "valor": 150.50,
+  "data": "2026-08-17",
+  "descricao": "Venda no balcão"
+}
+
+### Registrar débito
+POST {{host}}/api/v1/lancamentos
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "tipo": 2,
+  "valor": 40.00,
+  "data": "2026-08-17",
+  "descricao": "Pagamento de fornecedor"
+}
+
+### Listar lançamentos do dia (paginado)
+GET {{host}}/api/v1/lancamentos?data=2026-08-17&pagina=1&tamanhoPagina=20
+Authorization: Bearer {{token}}
