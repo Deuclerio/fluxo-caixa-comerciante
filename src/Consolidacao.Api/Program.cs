@@ -86,8 +86,8 @@ try
         options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
         options.AddFixedWindowLimiter("padrao", limiter =>
         {
-            limiter.PermitLimit = 100;
-            limiter.Window = TimeSpan.FromMinutes(1);
+            limiter.PermitLimit = 60;
+            limiter.Window = TimeSpan.FromSeconds(1);
             limiter.QueueLimit = 0;
         });
     });

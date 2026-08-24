@@ -30,6 +30,42 @@ flowchart LR
   Consolidacao --> Redis[(Redis cache)]
 ```
 
+## Requisitos
+
+### Funcionais
+
+- Registrar crédito ou débito com tipo, valor, data de caixa e descrição.
+- Consultar um lançamento por identificador.
+- Listar lançamentos por dia, com paginação.
+- Consolidar o saldo diário a partir dos lançamentos registrados.
+- Consultar o saldo diário consolidado e a evolução por período.
+- Garantir idempotência na consolidação para evitar saldo duplicado em reentregas.
+
+### Não funcionais
+
+- Autenticação JWT para acesso às APIs.
+- Separação de responsabilidade entre contextos e bancos.
+- Processamento assíncrono entre registro e consolidação.
+- Cache de leitura para o saldo diário.
+- Health checks e logs estruturados para operação.
+- Escalabilidade horizontal independente por serviço.
+- Resiliência a reprocessamento de mensagens e falhas transitórias.
+
+## Premissas e cenários tratados
+
+O enunciado não detalha todos os casos de uso e por isso a solução assume alguns pontos de arquitetura:
+
+- Um comerciante por ambiente lógico, sem multi-tenant.
+- Lançamentos são imutáveis após criação; correções futuras devem ocorrer por estorno como novo lançamento.
+- O saldo pode ter consistência eventual entre o registro e a consolidação.
+- Reentrega de mensagem não pode duplicar saldo.
+- Dia sem lançamento retorna saldo zerado, não erro.
+- Intervalo de consulta de saldos tem limite de 90 dias.
+- Valores aceitam até duas casas decimais.
+- Descrição precisa ter entre 3 e 200 caracteres.
+- A data do lançamento não pode avançar mais de um dia no futuro.
+- A arquitetura alvo considera API Gateway, outbox transacional e observabilidade avançada como evolução para produção.
+
 ## Pré-requisitos
 
 - [.NET 9 SDK](https://dotnet.microsoft.com/download)
@@ -139,3 +175,13 @@ docker-compose.yml
 3. **Database per service** — cada contexto tem o próprio modelo e o próprio banco.
 4. **Idempotência na consolidação** — reentrega de mensagem (at-least-once) não duplica saldo.
 5. **O que não foi implementado em código** está documentado como arquitetura alvo (API Gateway, outbox transacional, observabilidade completa). Ver [docs/03-arquitetura-alvo.md](docs/03-arquitetura-alvo.md).
+
+## Leitura arquitetural do enunciado
+
+Mesmo sendo um desafio de desenvolvedor, o enunciado pede leitura de arquiteto:
+
+- **Disponibilidade**: o registro não deve depender do serviço de consolidação estar online.
+- **Desacoplamento**: leitura de saldo não precisa consultar o banco de lançamentos em tempo real.
+- **Carga**: o sistema deve absorver pico sem travar o caminho de escrita.
+- **Falhas parciais**: uma queda temporária do consumidor não pode corromper o saldo.
+- **Evolução**: novos relatórios e integrações devem caber sem refatorar o núcleo de domínio.
