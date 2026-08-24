@@ -1,6 +1,6 @@
 # Fluxo de Caixa do Comerciante
 
-Solução de arquitetura e implementação em **C# / .NET 9** para o desafio de Arquiteto de Soluções: controlar o fluxo de caixa diário (créditos e débitos) e fornecer o **saldo diário consolidado**.
+Solução de arquitetura e implementação em **C# / .NET 10** para o desafio de Arquiteto de Soluções: controlar o fluxo de caixa diário (créditos e débitos) e fornecer o **saldo diário consolidado**.
 
 ## Como a solução atende o desafio
 
@@ -68,7 +68,7 @@ O enunciado não detalha todos os casos de uso e por isso a solução assume alg
 
 ## Pré-requisitos
 
-- [.NET 9 SDK](https://dotnet.microsoft.com/download)
+- [.NET 10 SDK](https://dotnet.microsoft.com/download)
 - [Docker Desktop](https://www.docker.com/products/docker-desktop/) (recomendado)
 
 ## Executar localmente (recomendado)

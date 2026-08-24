@@ -10,7 +10,7 @@ Alternativa descartada neste desafio: **monolito modular**. Seria mais simples p
 
 Detalhes: [ADR 001](adr/001-estilo-arquitetural.md).
 
-## Linguagem: C# / .NET 9
+## Linguagem: C# / .NET 10
 
 - Linguagem escolhida para o desafio.
 - Ecossistema maduro para APIs, mensageria e persistência.
